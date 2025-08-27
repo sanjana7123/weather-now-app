@@ -19,7 +19,7 @@ This is a simple web app built for Jamie, an outdoor enthusiast, to quickly chec
 1. Clone the repo or copy files.
 2. Install dependencies: `npm install`.
 3. Start dev server: `npm run dev`.
-4. Open http://localhost:5173.
+4. Open http://localhost:5174.
 
 ## Deployment
 - Deployed on StackBlitz/CodeSandbox for quick hosting (paste files into a new React sandbox).
