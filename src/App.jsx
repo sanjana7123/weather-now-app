@@ -59,9 +59,9 @@ function App() {
     setLoading(true);
 
     try {
-      // Geocode city to lat/long
+      // Use proxy for geocoding - note the /api/ prefix
       const geoRes = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(searchCity)}&count=1&language=en`
+        `/api/geocoding/v1/search?name=${encodeURIComponent(searchCity)}&count=1&language=en`
       );
       if (!geoRes.ok) throw new Error('Failed to find location');
       const geoData = await geoRes.json();
@@ -70,9 +70,9 @@ function App() {
       }
       const { latitude, longitude, name, country, admin1 } = geoData.results[0];
 
-      // Fetch current weather
+      // Use proxy for weather data - note the /api/ prefix
       const weatherRes = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,is_day&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
+        `/api/forecast/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,is_day&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
       );
       if (!weatherRes.ok) throw new Error('Failed to fetch weather data');
       const weatherData = await weatherRes.json();
@@ -116,16 +116,16 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl bg-white/30 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-gray-200/50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-6 text-white">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
           <h1 className="text-3xl font-bold mb-2">WeatherNow</h1>
           <p className="opacity-90">Get accurate weather forecasts for any location</p>
         </div>
 
         {/* Search Section */}
-        <div className="p-6 border-b border-gray-200/50">
+        <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col sm:flex-row gap-3">
             <input
               type="text"
@@ -133,12 +133,12 @@ function App() {
               onChange={(e) => setCity(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               placeholder="Enter city name..."
-              className="flex-grow border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm"
+              className="flex-grow border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
             />
             <button
               onClick={() => handleSearch()}
               disabled={loading}
-              className="bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-700 transition duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+              className="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
             >
               {loading ? (
                 <>
@@ -177,7 +177,7 @@ function App() {
 
         {/* Error Display */}
         {error && (
-          <div className="p-6 bg-red-50/80 border-l-4 border-red-500">
+          <div className="p-6 bg-red-50 border-l-4 border-red-500">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -211,7 +211,7 @@ function App() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-white/50 backdrop-blur-md p-4 rounded-lg shadow-sm">
+              <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
                 <div className="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -221,7 +221,7 @@ function App() {
                 <p className="text-2xl font-semibold mt-2">{weather.windSpeed} {weather.units.wind_speed_10m}</p>
               </div>
 
-              <div className="bg-white/50 backdrop-blur-md p-4 rounded-lg shadow-sm">
+              <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
                 <div className="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
@@ -231,7 +231,7 @@ function App() {
                 <p className="text-2xl font-semibold mt-2">{weather.humidity}%</p>
               </div>
 
-              <div className="bg-white/50 backdrop-blur-md p-4 rounded-lg shadow-sm">
+              <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
                 <div className="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -248,7 +248,7 @@ function App() {
                 <h3 className="text-xl font-semibold mb-4 text-gray-800">24-Hour Forecast</h3>
                 <div className="flex overflow-x-auto pb-4 space-x-4">
                   {weather.hourly.time.slice(0, 24).map((time, index) => (
-                    <div key={index} className="flex-shrink-0 w-20 bg-white/50 backdrop-blur-md rounded-lg shadow-sm p-3 text-center">
+                    <div key={index} className="flex-shrink-0 w-20 bg-white rounded-lg shadow-sm p-3 text-center">
                       <p className="text-sm text-gray-600">{new Date(time).getHours()}:00</p>
                       <p className="text-2xl my-2">{getWeatherInfo(weather.hourly.weather_code[index]).icon}</p>
                       <p className="font-semibold">{weather.hourly.temperature_2m[index]}°</p>
@@ -261,7 +261,7 @@ function App() {
         )}
 
         {/* Footer */}
-        <div className="bg-gray-100/50 backdrop-blur-md p-4 text-center text-sm text-gray-600">
+        <div className="bg-gray-100 p-4 text-center text-sm text-gray-600">
           <p>Powered by Open-Meteo API • Weather data updates automatically</p>
         </div>
       </div>
