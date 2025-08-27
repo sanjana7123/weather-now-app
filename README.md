@@ -29,5 +29,3 @@ This is a simple web app built for Jamie, an outdoor enthusiast, to quickly chec
 - No additional features added to keep it core-focused, but could extend with forecasts or units toggle.
 - Tested for basic functionality; handles empty inputs gracefully.
 - Code is commented for readability.
-
-Good luck with the submission!
