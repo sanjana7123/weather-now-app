@@ -16,6 +16,9 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/forecast/, '')
       }
-    }
+    },
+    allowedHosts: ['fdcwt2-5174.csb.app'], // 👈 add your sandbox host here
+    host: true, // allow external access (important if running outside localhost)
+    port: 5174  // optional
   }
 })
